@@ -1,3 +1,5 @@
+import time
+
 from django.apps import AppConfig
 
 
@@ -7,3 +9,5 @@ class NewsletterConfig(AppConfig):
 
     def ready(self):
         from . import scheduler
+        time.sleep(2)
+        scheduler.start_scheduler()
