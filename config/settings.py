@@ -13,9 +13,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
-
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -24,6 +21,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'newsletter',
+    'django_apscheduler',
 ]
 
 MIDDLEWARE = [
@@ -99,9 +97,17 @@ USE_I18N = True
 USE_TZ = True
 
 
-
-
 STATIC_URL = 'static/'
 STATICFILES_DIRS = (BASE_DIR /'static',)
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'mixei1902@yandex.ru'
+EMAIL_HOST_PASSWORD = 'doylgbkidhutlwab'
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
+APSCHEDULER_RUN_NOW_TIMEOUT = 25
