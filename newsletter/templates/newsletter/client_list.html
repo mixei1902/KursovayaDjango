@@ -4,7 +4,7 @@
     <title>Clients</title>
 </head>
 <body>
-    <h1>Clients</h1>
+    <h1>Клиенты</h1>
     <a href="{% url 'newsletter:client_create' %}">Создать нового пользователя</a>
     <ul>
         {% for client in clients %}
@@ -15,5 +15,6 @@
             </li>
         {% endfor %}
     </ul>
+<a href="{% url 'newsletter:home' %}">Главная</a>
 </body>
 </html>

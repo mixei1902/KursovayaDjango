@@ -108,7 +108,7 @@ class MailingCreateView(LoginRequiredMixin, CreateView):
     model = Mailing
     form_class = MailingForm
     template_name = 'newsletter/mailing_form.html'
-    success_url = reverse_lazy('mailing_list')
+    success_url = reverse_lazy('newsletter:mailing_list')
 
     def form_valid(self, form):
         form.instance.owner = self.request.user
@@ -122,7 +122,7 @@ class MailingUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Mailing
     form_class = MailingForm
     template_name = 'newsletter/mailing_form.html'
-    success_url = reverse_lazy('mailing_list')
+    success_url = reverse_lazy('newsletter:mailing_list')
 
     def get_queryset(self):
         return Mailing.objects.filter(owner=self.request.user)
@@ -138,7 +138,7 @@ class MailingDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     """
     model = Mailing
     template_name = 'newsletter/mailing_confirm_delete.html'
-    success_url = reverse_lazy('mailing_list')
+    success_url = reverse_lazy('newsletter:mailing_list')
 
     def get_queryset(self):
         return Mailing.objects.filter(owner=self.request.user)
@@ -177,7 +177,7 @@ class MessageCreateView(LoginRequiredMixin, CreateView):
     model = Message
     form_class = MessageForm
     template_name = 'newsletter/message_form.html'
-    success_url = reverse_lazy('message_list')
+    success_url = reverse_lazy('newsletter:message_list')
 
     def form_valid(self, form):
         form.instance.owner = self.request.user
@@ -191,7 +191,7 @@ class MessageUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Message
     form_class = MessageForm
     template_name = 'newsletter/message_form.html'
-    success_url = reverse_lazy('message_list')
+    success_url = reverse_lazy('newsletter:message_list')
 
     def get_queryset(self):
         return Message.objects.filter(owner=self.request.user)
@@ -207,7 +207,7 @@ class MessageDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     """
     model = Message
     template_name = 'newsletter/message_confirm_delete.html'
-    success_url = reverse_lazy('message_list')
+    success_url = reverse_lazy('newsletter:message_list')
 
     def get_queryset(self):
         return Message.objects.filter(owner=self.request.user)

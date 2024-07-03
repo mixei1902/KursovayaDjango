@@ -10,9 +10,7 @@
     <li><a href="{% url 'newsletter:message_list' %}">Сообщения</a></li>
     <li><a href="{% url 'newsletter:mailing_list' %}">Рассылки</a></li>
     <li><a href="{% url 'newsletter:report_list' %}">Отчёты</a></li>
-    <li><a href="{% url 'newsletter:user_create' %}">Содлать пользователя</a></li>
     {% if user.is_authenticated %}
-    <li><a href="{% url 'newsletter:user_create' %}">Создать пользователя</a></li>
     <li><a href="{% url 'logout' %}">Войти</a></li>
     {% else %}
     <li><a href="{% url 'login' %}">Выйти</a></li>

@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import DateTimeInput
 
 from .models import Client, Message, Mailing
 
@@ -32,5 +33,6 @@ class MailingForm(forms.ModelForm):
         model = Mailing
         fields = ['start_date', 'periodicity', 'status', 'message', 'clients']
         widgets = {
+            'start_date': DateTimeInput(attrs={'type': 'datetime-local'}),
             'clients': forms.CheckboxSelectMultiple,
         }
