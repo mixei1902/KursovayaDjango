@@ -1,190 +1,230 @@
-from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404, redirect
-from django.utils import timezone
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.models import User
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from .forms import ClientForm, MessageForm, MailingForm
-from .models import Client, Message, Mailing
-from .tasks import send_newsletters_for_mailing
-
-
-def index(request):
-    return HttpResponse("Hello, world. You're at the newsletter index.")
+from .forms import ClientForm, MailingForm, MessageForm
+from .models import Client, Mailing, MailingAttempt, Message
 
 
-def client_list(request):
+class ClientListView(LoginRequiredMixin, ListView):
     """
-    Представление для отображения списка клиентов текущего пользователя.
-    """
-    clients = Client.objects.filter(owner=request.user)
-    return render(request, 'newsletter/client_list.html', {'clients': clients})
+        Представление для отображения списка клиентов текущего пользователя.
+     """
+    model = Client
+    template_name = 'newsletter/client_list.html'
+
+    def get_queryset(self):
+        return Client.objects.filter(owner=self.request.user)
 
 
-def client_detail(request, pk):
+class ClientDetailView(LoginRequiredMixin, DetailView):
     """
     Представление для отображения деталей клиента текущего пользователя.
     """
-    client = get_object_or_404(Client, pk=pk, owner=request.user)
-    return render(request, 'newsletter/client_detail.html', {'client': client})
+    model = Client
+    template_name = 'newsletter/client_detail.html'
+
+    def get_queryset(self):
+        return Client.objects.filter(owner=self.request.user)
 
 
-def client_create(request):
+class ClientCreateView(LoginRequiredMixin, CreateView):
     """
     Представление для создания нового клиента.
     """
-    if request.method == "POST":
-        form = ClientForm(request.POST)
-        if form.is_valid():
-            client = form.save(commit=False)
-            client.owner = request.user
-            client.save()
-            return redirect('client_list')
-    else:
-        form = ClientForm()
-    return render(request, 'newsletter/client_form.html', {'form': form})
+    model = Client
+    form_class = ClientForm
+    template_name = 'newsletter/client_form.html'
+    success_url = reverse_lazy('client_list')
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
 
 
-def client_update(request, pk):
+class ClientUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     """
     Представление для редактирования существующего клиента.
     """
-    client = get_object_or_404(Client, pk=pk, owner=request.user)
-    if request.method == "POST":
-        form = ClientForm(request.POST, instance=client)
-        if form.is_valid():
-            form.save()
-            return redirect('client_list')
-    else:
-        form = ClientForm(instance=client)
-    return render(request, 'newsletter/client_form.html', {'form': form})
+    model = Client
+    form_class = ClientForm
+    template_name = 'newsletter/client_form.html'
+    success_url = reverse_lazy('client_list')
+
+    def get_queryset(self):
+        return Client.objects.filter(owner=self.request.user)
+
+    def test_func(self):
+        client = self.get_object()
+        return client.owner == self.request.user
 
 
-def client_delete(request, pk):
+class ClientDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     """
     Представление для удаления клиента.
     """
-    client = get_object_or_404(Client, pk=pk, owner=request.user)
-    if request.method == "POST":
-        client.delete()
-        return redirect('client_list')
-    return render(request, 'newsletter/client_confirm_delete.html', {'client': client})
+    model = Client
+    template_name = 'newsletter/client_confirm_delete.html'
+    success_url = reverse_lazy('client_list')
+
+    def get_queryset(self):
+        return Client.objects.filter(owner=self.request.user)
+
+    def test_func(self):
+        client = self.get_object()
+        return client.owner == self.request.user
 
 
-def message_list(request):
-    """
-    Представление для отображения списка сообщений текущего пользователя.
-    """
-    messages = Message.objects.filter(owner=request.user)
-    return render(request, 'newsletter/message_list.html', {'messages': messages})
-
-
-def message_detail(request, pk):
-    """
-    Представление для отображения деталей сообщения текущего пользователя.
-    """
-    message = get_object_or_404(Message, pk=pk, owner=request.user)
-    return render(request, 'newsletter/message_detail.html', {'message': message})
-
-
-def message_create(request):
-    """
-    Представление для создания нового сообщения.
-    """
-    if request.method == "POST":
-        form = MessageForm(request.POST)
-        if form.is_valid():
-            message = form.save(commit=False)
-            message.owner = request.user
-            message.save()
-            return redirect('message_list')
-    else:
-        form = MessageForm()
-    return render(request, 'newsletter/message_form.html', {'form': form})
-
-
-def message_update(request, pk):
-    """
-    Представление для редактирования существующего сообщения.
-    """
-    message = get_object_or_404(Message, pk=pk, owner=request.user)
-    if request.method == "POST":
-        form = MessageForm(request.POST, instance=message)
-        if form.is_valid():
-            form.save()
-            return redirect('message_list')
-    else:
-        form = MessageForm(instance=message)
-    return render(request, 'newsletter/message_form.html', {'form': form})
-
-
-def message_delete(request, pk):
-    """
-    Представление для удаления сообщения.
-    """
-    message = get_object_or_404(Message, pk=pk, owner=request.user)
-    if request.method == "POST":
-        message.delete()
-        return redirect('message_list')
-    return render(request, 'newsletter/message_confirm_delete.html', {'message': message})
-
-
-def mailing_list(request):
+class MailingListView(LoginRequiredMixin, ListView):
     """
     Представление для отображения списка рассылок текущего пользователя.
     """
-    mailings = Mailing.objects.filter(owner=request.user)
-    return render(request, 'newsletter/mailing_list.html', {'mailings': mailings})
+    model = Mailing
+    template_name = 'newsletter/mailing_list.html'
+
+    def get_queryset(self):
+        return Mailing.objects.filter(owner=self.request.user)
 
 
-def mailing_detail(request, pk):
+class MailingDetailView(LoginRequiredMixin, DetailView):
     """
     Представление для отображения деталей рассылки текущего пользователя.
     """
-    mailing = get_object_or_404(Mailing, pk=pk, owner=request.user)
-    return render(request, 'newsletter/mailing_detail.html', {'mailing': mailing})
+    model = Mailing
+    template_name = 'newsletter/mailing_detail.html'
+
+    def get_queryset(self):
+        return Mailing.objects.filter(owner=self.request.user)
 
 
-def mailing_create(request):
+class MailingCreateView(LoginRequiredMixin, CreateView):
     """
     Представление для создания новой рассылки.
     """
-    if request.method == "POST":
-        form = MailingForm(request.POST)
-        if form.is_valid():
-            mailing = form.save(commit=False)
-            mailing.owner = request.user
-            mailing.save()
-            form.save_m2m()
+    model = Mailing
+    form_class = MailingForm
+    template_name = 'newsletter/mailing_form.html'
+    success_url = reverse_lazy('mailing_list')
 
-            if mailing.start_date <= timezone.now():
-                send_newsletters_for_mailing(mailing)
-
-            return redirect('mailing_list')
-    else:
-        form = MailingForm()
-    return render(request, 'newsletter/mailing_form.html', {'form': form})
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
 
 
-def mailing_update(request, pk):
+class MailingUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     """
     Представление для редактирования существующей рассылки.
     """
-    mailing = get_object_or_404(Mailing, pk=pk, owner=request.user)
-    if request.method == "POST":
-        form = MailingForm(request.POST, instance=mailing)
-        if form.is_valid():
-            form.save()
-            return redirect('mailing_list')
-    else:
-        form = MailingForm(instance=mailing)
-    return render(request, 'newsletter/mailing_form.html', {'form': form})
+    model = Mailing
+    form_class = MailingForm
+    template_name = 'newsletter/mailing_form.html'
+    success_url = reverse_lazy('mailing_list')
+
+    def get_queryset(self):
+        return Mailing.objects.filter(owner=self.request.user)
+
+    def test_func(self):
+        mailing = self.get_object()
+        return mailing.owner == self.request.user
 
 
-def mailing_delete(request, pk):
+class MailingDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     """
     Представление для удаления рассылки.
     """
-    mailing = get_object_or_404(Mailing, pk=pk, owner=request.user)
-    if request.method == "POST":
-        mailing.delete()
-        return redirect('mailing_list')
-    return render(request, 'newsletter/mailing_confirm_delete.html', {'mailing': mailing})
+    model = Mailing
+    template_name = 'newsletter/mailing_confirm_delete.html'
+    success_url = reverse_lazy('mailing_list')
+
+    def get_queryset(self):
+        return Mailing.objects.filter(owner=self.request.user)
+
+    def test_func(self):
+        mailing = self.get_object()
+        return mailing.owner == self.request.user
+
+
+class ReportListView(LoginRequiredMixin, ListView):
+    model = MailingAttempt
+    template_name = 'newsletter/report_list.html'
+
+
+class ReportDetailView(LoginRequiredMixin, DetailView):
+    model = MailingAttempt
+    template_name = 'newsletter/report_detail.html'
+
+
+class UserCreateView(LoginRequiredMixin, CreateView):
+    model = User
+    form_class = UserCreationForm
+    template_name = 'newsletter/user_form.html'
+    success_url = reverse_lazy('user_list')
+
+
+class UserUpdateView(LoginRequiredMixin, UpdateView):
+    model = User
+    form_class = UserChangeForm
+    template_name = 'newsletter/user_form.html'
+    success_url = reverse_lazy('user_list')
+
+
+class UserDeleteView(LoginRequiredMixin, DeleteView):
+    model = User
+    template_name = 'newsletter/user_confirm_delete.html'
+    success_url = reverse_lazy('user_list')
+
+
+class MessageListView(LoginRequiredMixin, ListView):
+    model = Message
+    template_name = 'newsletter/message_list.html'
+
+    def get_queryset(self):
+        return Message.objects.filter(owner=self.request.user)
+
+
+class MessageDetailView(LoginRequiredMixin, DetailView):
+    model = Message
+    template_name = 'newsletter/message_detail.html'
+
+    def get_queryset(self):
+        return Message.objects.filter(owner=self.request.user)
+
+
+class MessageCreateView(LoginRequiredMixin, CreateView):
+    model = Message
+    form_class = MessageForm
+    template_name = 'newsletter/message_form.html'
+    success_url = reverse_lazy('message_list')
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
+
+
+class MessageUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Message
+    form_class = MessageForm
+    template_name = 'newsletter/message_form.html'
+    success_url = reverse_lazy('message_list')
+
+    def get_queryset(self):
+        return Message.objects.filter(owner=self.request.user)
+
+    def test_func(self):
+        message = self.get_object()
+        return message.owner == self.request.user
+
+
+class MessageDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Message
+    template_name = 'newsletter/message_confirm_delete.html'
+    success_url = reverse_lazy('message_list')
+
+    def get_queryset(self):
+        return Message.objects.filter(owner=self.request.user)
+
+    def test_func(self):
+        message = self.get_object()
+        return message.owner == self.request.user

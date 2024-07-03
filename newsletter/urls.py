@@ -1,31 +1,34 @@
 from django.urls import path
-
-from . import views
-from .views import client_list, client_detail, client_create, client_update, client_delete
-from .views import mailing_list, mailing_detail, mailing_create, mailing_update, mailing_delete
-from .views import message_list, message_detail, message_create, message_update, message_delete
-
-app_name = 'newsletter'
+from .views import (
+    ClientListView, ClientDetailView, ClientCreateView, ClientUpdateView, ClientDeleteView,
+    MessageListView, MessageDetailView, MessageCreateView, MessageUpdateView, MessageDeleteView,
+    MailingListView, MailingDetailView, MailingCreateView, MailingUpdateView, MailingDeleteView,
+    ReportListView, ReportDetailView, UserCreateView, UserDeleteView, UserUpdateView
+)
 
 urlpatterns = [
-    # Clients
-    path('clients/', client_list, name='client_list'),
-    path('clients/<int:pk>/', client_detail, name='client_detail'),
-    path('clients/new/', client_create, name='client_create'),
-    path('clients/<int:pk>/edit/', client_update, name='client_update'),
-    path('clients/<int:pk>/delete/', client_delete, name='client_delete'),
+    path('clients/', ClientListView.as_view(), name='client_list'),
+    path('clients/<int:pk>/', ClientDetailView.as_view(), name='client_detail'),
+    path('clients/new/', ClientCreateView.as_view(), name='client_create'),
+    path('clients/<int:pk>/edit/', ClientUpdateView.as_view(), name='client_update'),
+    path('clients/<int:pk>/delete/', ClientDeleteView.as_view(), name='client_delete'),
 
-    # Messages
-    path('messages/', message_list, name='message_list'),
-    path('messages/<int:pk>/', message_detail, name='message_detail'),
-    path('messages/new/', message_create, name='message_create'),
-    path('messages/<int:pk>/edit/', message_update, name='message_update'),
-    path('messages/<int:pk>/delete/', message_delete, name='message_delete'),
+    path('messages/', MessageListView.as_view(), name='message_list'),
+    path('messages/<int:pk>/', MessageDetailView.as_view(), name='message_detail'),
+    path('messages/new/', MessageCreateView.as_view(), name='message_create'),
+    path('messages/<int:pk>/edit/', MessageUpdateView.as_view(), name='message_update'),
+    path('messages/<int:pk>/delete/', MessageDeleteView.as_view(), name='message_delete'),
 
-    # Mailings
-    path('mailings/', mailing_list, name='mailing_list'),
-    path('mailings/<int:pk>/', mailing_detail, name='mailing_detail'),
-    path('mailings/new/', mailing_create, name='mailing_create'),
-    path('mailings/<int:pk>/edit/', mailing_update, name='mailing_update'),
-    path('mailings/<int:pk>/delete/', mailing_delete, name='mailing_delete'),
+    path('mailings/', MailingListView.as_view(), name='mailing_list'),
+    path('mailings/<int:pk>/', MailingDetailView.as_view(), name='mailing_detail'),
+    path('mailings/new/', MailingCreateView.as_view(), name='mailing_create'),
+    path('mailings/<int:pk>/edit/', MailingUpdateView.as_view(), name='mailing_update'),
+    path('mailings/<int:pk>/delete/', MailingDeleteView.as_view(), name='mailing_delete'),
+
+    path('reports/', ReportListView.as_view(), name='report_list'),
+    path('reports/<int:pk>/', ReportDetailView.as_view(), name='report_detail'),
+
+    path('users/new/', UserCreateView.as_view(), name='user_create'),
+    path('users/<int:pk>/edit/', UserUpdateView.as_view(), name='user_update'),
+    path('users/<int:pk>/delete/', UserDeleteView.as_view(), name='user_delete'),
 ]

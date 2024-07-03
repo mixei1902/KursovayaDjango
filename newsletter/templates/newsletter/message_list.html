@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Messages</title>
+</head>
+<body>
+<h1>Messages</h1>
+<a href="{% url 'message_create' %}">Create new message</a>
+<ul>
+    {% for message in messages %}
+    <li>
+        <a href="{% url 'message_detail' message.pk %}">{{ message.subject }}</a>
+        <a href="{% url 'message_update' message.pk %}">Edit</a>
+        <a href="{% url 'message_delete' message.pk %}">Delete</a>
+    </li>
+    {% endfor %}
+</ul>
+</body>
+</html>

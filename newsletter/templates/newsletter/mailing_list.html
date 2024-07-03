@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mailings</title>
+</head>
+<body>
+<h1>Mailings</h1>
+<a href="{% url 'mailing_create' %}">Create new mailing</a>
+<ul>
+    {% for mailing in mailings %}
+    <li>
+        <a href="{% url 'mailing_detail' mailing.pk %}">{{ mailing.message.subject }}</a>
+        <a href="{% url 'mailing_update' mailing.pk %}">Edit</a>
+        <a href="{% url 'mailing_delete' mailing.pk %}">Delete</a>
+    </li>
+    {% endfor %}
+</ul>
+</body>
+</html>

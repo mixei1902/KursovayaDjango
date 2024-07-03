@@ -4,9 +4,9 @@
     <title>{{ client.full_name }}</title>
 </head>
 <body>
-    <h1>{{ client.full_name }}</h1>
-    <p>{{ client.email }}</p>
-    <p>{{ client.comment }}</p>
-    <a href="{% url 'client_list' %}">Back to list</a>
+<h1>{{ client.full_name }}</h1>
+<p>Email: {{ client.email }}</p>
+<p>Comment: {{ client.comment }}</p>
+<a href="{% url 'client_list' %}">Back to list</a>
 </body>
 </html>
