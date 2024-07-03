@@ -1,8 +1,11 @@
 from django.urls import path
 
+from . import views
 from .views import client_list, client_detail, client_create, client_update, client_delete
 from .views import mailing_list, mailing_detail, mailing_create, mailing_update, mailing_delete
 from .views import message_list, message_detail, message_create, message_update, message_delete
+
+app_name = 'newsletter'
 
 urlpatterns = [
     # Clients

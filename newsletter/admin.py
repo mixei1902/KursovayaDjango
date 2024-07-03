@@ -4,4 +4,4 @@ from .models import Mailing
 
 @admin.register(Mailing)
 class MailingAdmin(admin.ModelAdmin):
-    list_display = ('subject', 'created_at', 'updated_at')
+    list_display = ('created_at', 'updated_at')

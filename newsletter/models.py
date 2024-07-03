@@ -51,7 +51,8 @@ class Mailing(models.Model):
     message = models.OneToOneField(Message, on_delete=models.CASCADE)
     clients = models.ManyToManyField(Client)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     def __str__(self):
         return f"Mailing {self.id} - {self.status}"
 

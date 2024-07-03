@@ -1,12 +1,15 @@
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required
-from .models import Client, Message, Mailing, MailingAttempt
-from .forms import ClientForm, MessageForm, MailingForm
 from django.utils import timezone
-from .tasks import send_newsletters_for_mailing
-from django.core.exceptions import PermissionDenied
 
-@login_required
+from .forms import ClientForm, MessageForm, MailingForm
+from .models import Client, Message, Mailing
+from .tasks import send_newsletters_for_mailing
+
+
+def index(request):
+    return HttpResponse("Hello, world. You're at the newsletter index.")
+
 
 def client_list(request):
     """
@@ -16,7 +19,6 @@ def client_list(request):
     return render(request, 'newsletter/client_list.html', {'clients': clients})
 
 
-@login_required
 def client_detail(request, pk):
     """
     Представление для отображения деталей клиента текущего пользователя.
@@ -25,7 +27,6 @@ def client_detail(request, pk):
     return render(request, 'newsletter/client_detail.html', {'client': client})
 
 
-@login_required
 def client_create(request):
     """
     Представление для создания нового клиента.
@@ -42,7 +43,6 @@ def client_create(request):
     return render(request, 'newsletter/client_form.html', {'form': form})
 
 
-@login_required
 def client_update(request, pk):
     """
     Представление для редактирования существующего клиента.
@@ -58,7 +58,6 @@ def client_update(request, pk):
     return render(request, 'newsletter/client_form.html', {'form': form})
 
 
-@login_required
 def client_delete(request, pk):
     """
     Представление для удаления клиента.
@@ -70,7 +69,6 @@ def client_delete(request, pk):
     return render(request, 'newsletter/client_confirm_delete.html', {'client': client})
 
 
-@login_required
 def message_list(request):
     """
     Представление для отображения списка сообщений текущего пользователя.
@@ -79,7 +77,6 @@ def message_list(request):
     return render(request, 'newsletter/message_list.html', {'messages': messages})
 
 
-@login_required
 def message_detail(request, pk):
     """
     Представление для отображения деталей сообщения текущего пользователя.
@@ -88,7 +85,6 @@ def message_detail(request, pk):
     return render(request, 'newsletter/message_detail.html', {'message': message})
 
 
-@login_required
 def message_create(request):
     """
     Представление для создания нового сообщения.
@@ -105,7 +101,6 @@ def message_create(request):
     return render(request, 'newsletter/message_form.html', {'form': form})
 
 
-@login_required
 def message_update(request, pk):
     """
     Представление для редактирования существующего сообщения.
@@ -121,7 +116,6 @@ def message_update(request, pk):
     return render(request, 'newsletter/message_form.html', {'form': form})
 
 
-@login_required
 def message_delete(request, pk):
     """
     Представление для удаления сообщения.
@@ -133,7 +127,6 @@ def message_delete(request, pk):
     return render(request, 'newsletter/message_confirm_delete.html', {'message': message})
 
 
-@login_required
 def mailing_list(request):
     """
     Представление для отображения списка рассылок текущего пользователя.
@@ -142,7 +135,6 @@ def mailing_list(request):
     return render(request, 'newsletter/mailing_list.html', {'mailings': mailings})
 
 
-@login_required
 def mailing_detail(request, pk):
     """
     Представление для отображения деталей рассылки текущего пользователя.
@@ -151,7 +143,6 @@ def mailing_detail(request, pk):
     return render(request, 'newsletter/mailing_detail.html', {'mailing': mailing})
 
 
-@login_required
 def mailing_create(request):
     """
     Представление для создания новой рассылки.
@@ -173,7 +164,6 @@ def mailing_create(request):
     return render(request, 'newsletter/mailing_form.html', {'form': form})
 
 
-@login_required
 def mailing_update(request, pk):
     """
     Представление для редактирования существующей рассылки.
@@ -189,7 +179,6 @@ def mailing_update(request, pk):
     return render(request, 'newsletter/mailing_form.html', {'form': form})
 
 
-@login_required
 def mailing_delete(request, pk):
     """
     Представление для удаления рассылки.

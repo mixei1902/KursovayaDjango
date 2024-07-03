@@ -48,3 +48,13 @@ def send_newsletters_for_mailing(mailing):
 
     mailing.status = 'completed'
     mailing.save()
+
+
+def timed_job():
+    """
+    Периодическая задача для отправки сообщений по расписанию.
+    """
+    now = timezone.now()
+    mailings = Mailing.objects.filter(start_date__lte=now, status='created')
+    for mailing in mailings:
+        send_newsletters_for_mailing(mailing)
