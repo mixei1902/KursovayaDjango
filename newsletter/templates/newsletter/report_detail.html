@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Report Details</title>
+</head>
+<body>
+<h1>Report Details</h1>
+<p>Mailing: {{ report.mailing.message.subject }}</p>
+<p>Attempt Date: {{ report.attempt_date }}</p>
+<p>Status: {{ report.status }}</p>
+<p>Server Response: {{ report.server_response }}</p>
+<a href="{% url 'report_list' %}">Back to list</a>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reports</title>
+</head>
+<body>
+<h1>Reports</h1>
+<ul>
+    {% for report in reports %}
+    <li>
+        <a href="{% url 'report_detail' report.pk %}">{{ report.mailing.message.subject }}</a>
+    </li>
+    {% endfor %}
+</ul>
+</body>
+</html>
