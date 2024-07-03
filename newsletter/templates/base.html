@@ -26,15 +26,18 @@
             </li>
         </ul>
         <ul class="navbar-nav ml-auto">
-            {% if user.is_authenticated %}
-            <li class="nav-item">
-                <a class="nav-link btn btn-outline-danger" href="{% url 'logout' %}">Выйти</a>
-            </li>
-            {% else %}
-            <li class="nav-item">
-                <a class="nav-link btn btn-outline-primary" href="{% url 'login' %}">Войти</a>
-            </li>
-            {% endif %}
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <form method="post" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-danger">Logout</button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-primary" href="{% url 'login' %}">Login</a>
+                    </li>
+                {% endif %}
         </ul>
     </div>
 </nav>
