@@ -16,6 +16,10 @@ class Client(models.Model):
     def __str__(self):
         return self.full_name
 
+    class Meta:
+        verbose_name = "Клиент"
+        verbose_name_plural = "Клиенты"
+
 
 class Message(models.Model):
     """
@@ -29,6 +33,9 @@ class Message(models.Model):
     def __str__(self):
         return self.subject
 
+    class Meta:
+        verbose_name = "Сообщение"
+        verbose_name_plural = "Сообщения"
 
 class Mailing(models.Model):
     """
@@ -36,16 +43,16 @@ class Mailing(models.Model):
     Содержит информацию о дате начала, периодичности, статусе, сообщении, клиентах и владельце.
     """
     STATUS_CHOICES = [
-        ('created', 'Created'),
-        ('running', 'Running'),
-        ('completed', 'Completed'),
+        ('created', 'Создана'),
+        ('running', 'Запущена'),
+        ('completed', 'Завершена'),
     ]
 
     start_date = models.DateTimeField()
     periodicity = models.CharField(max_length=50, choices=[
-        ('daily', 'Daily'),
-        ('weekly', 'Weekly'),
-        ('monthly', 'Monthly')
+        ('daily', 'Раз в день'),
+        ('weekly', 'Раз в неделю'),
+        ('monthly', 'Раз в месяц')
     ])
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='created')
     message = models.OneToOneField(Message, on_delete=models.CASCADE)
@@ -54,7 +61,7 @@ class Mailing(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     def __str__(self):
-        return f"Mailing {self.id} - {self.status}"
+        return f"Рассылка {self.id} - {self.status}"
 
 
 class MailingAttempt(models.Model):
@@ -63,8 +70,8 @@ class MailingAttempt(models.Model):
     Содержит информацию о рассылке, дате попытки, статусе и ответе почтового сервера.
     """
     STATUS_CHOICES = [
-        ('success', 'Success'),
-        ('failed', 'Failed'),
+        ('success', 'Успешна'),
+        ('failed', 'Провалена'),
     ]
 
     mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE)
@@ -73,4 +80,4 @@ class MailingAttempt(models.Model):
     server_response = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f"Attempt for Mailing {self.mailing.id} on {self.attempt_date}"
+        return f"Попытка рассылки {self.mailing.id} на {self.attempt_date}"

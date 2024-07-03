@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Delete {{ client.full_name }}</title>
+    <title>Удалить {{ client.full_name }}</title>
 </head>
 <body>
-<h1>Are you sure you want to delete "{{ client.full_name }}"?</h1>
+<h1>Вы уверены, что хотите удалить клиента "{{ client.full_name }}"?</h1>
 <form method="post">
     {% csrf_token %}
-    <button type="submit">Yes, delete</button>
+    <button type="submit">Да</button>
 </form>
-<a href="{% url 'client_list' %}">Back to list</a>
+<a href="{% url 'newsletter:client_list' %}">Назад</a>
 </body>
 </html>

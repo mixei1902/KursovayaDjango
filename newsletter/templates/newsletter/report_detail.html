@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Report Details</title>
+    <title>Отчёт по рассылке</title>
 </head>
 <body>
-<h1>Report Details</h1>
-<p>Mailing: {{ report.mailing.message.subject }}</p>
-<p>Attempt Date: {{ report.attempt_date }}</p>
-<p>Status: {{ report.status }}</p>
-<p>Server Response: {{ report.server_response }}</p>
-<a href="{% url 'report_list' %}">Back to list</a>
+<h1>Детали:</h1>
+<p>Рассылка: {{ report.mailing.message.subject }}</p>
+<p>Дата запуска: {{ report.attempt_date }}</p>
+<p>Статус: {{ report.status }}</p>
+<p>Ответ от сервера: {{ report.server_response }}</p>
+<a href="{% url 'newsletter:report_list' %}">Назад</a>
 </body>
 </html>

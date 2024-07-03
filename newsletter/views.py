@@ -1,11 +1,13 @@
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.contrib.auth.models import User
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 
 from .forms import ClientForm, MailingForm, MessageForm
 from .models import Client, Mailing, MailingAttempt, Message
+
+
+class HomePageView(TemplateView):
+    template_name = 'newsletter/home.html'
 
 
 class ClientListView(LoginRequiredMixin, ListView):
@@ -37,7 +39,7 @@ class ClientCreateView(LoginRequiredMixin, CreateView):
     model = Client
     form_class = ClientForm
     template_name = 'newsletter/client_form.html'
-    success_url = reverse_lazy('client_list')
+    success_url = reverse_lazy('newsletter:client_list')
 
     def form_valid(self, form):
         form.instance.owner = self.request.user
@@ -51,7 +53,7 @@ class ClientUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Client
     form_class = ClientForm
     template_name = 'newsletter/client_form.html'
-    success_url = reverse_lazy('client_list')
+    success_url = reverse_lazy('newsletter:client_list')
 
     def get_queryset(self):
         return Client.objects.filter(owner=self.request.user)
@@ -67,7 +69,7 @@ class ClientDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     """
     model = Client
     template_name = 'newsletter/client_confirm_delete.html'
-    success_url = reverse_lazy('client_list')
+    success_url = reverse_lazy('newsletter:client_list')
 
     def get_queryset(self):
         return Client.objects.filter(owner=self.request.user)
@@ -146,37 +148,10 @@ class MailingDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return mailing.owner == self.request.user
 
 
-class ReportListView(LoginRequiredMixin, ListView):
-    model = MailingAttempt
-    template_name = 'newsletter/report_list.html'
-
-
-class ReportDetailView(LoginRequiredMixin, DetailView):
-    model = MailingAttempt
-    template_name = 'newsletter/report_detail.html'
-
-
-class UserCreateView(LoginRequiredMixin, CreateView):
-    model = User
-    form_class = UserCreationForm
-    template_name = 'newsletter/user_form.html'
-    success_url = reverse_lazy('user_list')
-
-
-class UserUpdateView(LoginRequiredMixin, UpdateView):
-    model = User
-    form_class = UserChangeForm
-    template_name = 'newsletter/user_form.html'
-    success_url = reverse_lazy('user_list')
-
-
-class UserDeleteView(LoginRequiredMixin, DeleteView):
-    model = User
-    template_name = 'newsletter/user_confirm_delete.html'
-    success_url = reverse_lazy('user_list')
-
-
 class MessageListView(LoginRequiredMixin, ListView):
+    """
+    Представление для отображения списка сообщений текущего пользователя.
+    """
     model = Message
     template_name = 'newsletter/message_list.html'
 
@@ -185,6 +160,9 @@ class MessageListView(LoginRequiredMixin, ListView):
 
 
 class MessageDetailView(LoginRequiredMixin, DetailView):
+    """
+    Представление для отображения деталей сообщения текущего пользователя.
+    """
     model = Message
     template_name = 'newsletter/message_detail.html'
 
@@ -193,6 +171,9 @@ class MessageDetailView(LoginRequiredMixin, DetailView):
 
 
 class MessageCreateView(LoginRequiredMixin, CreateView):
+    """
+    Представление для создания нового сообщения.
+    """
     model = Message
     form_class = MessageForm
     template_name = 'newsletter/message_form.html'
@@ -204,6 +185,9 @@ class MessageCreateView(LoginRequiredMixin, CreateView):
 
 
 class MessageUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    """
+    Представление для редактирования существующего сообщения.
+    """
     model = Message
     form_class = MessageForm
     template_name = 'newsletter/message_form.html'
@@ -218,6 +202,9 @@ class MessageUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 
 class MessageDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    """
+    Представление для удаления сообщения.
+    """
     model = Message
     template_name = 'newsletter/message_confirm_delete.html'
     success_url = reverse_lazy('message_list')
@@ -228,3 +215,19 @@ class MessageDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         message = self.get_object()
         return message.owner == self.request.user
+
+
+class ReportListView(LoginRequiredMixin, ListView):
+    """
+    Представление для простмотра отчётов по рассылке.
+    """
+    model = MailingAttempt
+    template_name = 'newsletter/report_list.html'
+
+
+class ReportDetailView(LoginRequiredMixin, DetailView):
+    """
+    Представление для детализации отчёта.
+    """
+    model = MailingAttempt
+    template_name = 'newsletter/report_detail.html'

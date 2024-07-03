@@ -4,14 +4,14 @@
     <title>Messages</title>
 </head>
 <body>
-<h1>Messages</h1>
-<a href="{% url 'message_create' %}">Create new message</a>
+<h1>Сообщения</h1>
+<a href="{% url 'newsletter:message_create' %}">Создать новое сообщение</a>
 <ul>
     {% for message in messages %}
     <li>
-        <a href="{% url 'message_detail' message.pk %}">{{ message.subject }}</a>
-        <a href="{% url 'message_update' message.pk %}">Edit</a>
-        <a href="{% url 'message_delete' message.pk %}">Delete</a>
+        <a href="{% url 'newsletter:message_detail' message.pk %}">{{ message.subject }}</a>
+        <a href="{% url 'newsletter:message_update' message.pk %}">Настроить</a>
+        <a href="{% url 'newsletter:message_delete' message.pk %}">Удалить</a>
     </li>
     {% endfor %}
 </ul>

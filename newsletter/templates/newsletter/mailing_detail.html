@@ -4,18 +4,18 @@
     <title>Mailing Details</title>
 </head>
 <body>
-<h1>Mailing Details</h1>
-<p>Start Date: {{ mailing.start_date }}</p>
-<p>Periodicity: {{ mailing.periodicity }}</p>
-<p>Status: {{ mailing.status }}</p>
-<p>Message: {{ mailing.message.subject }}</p>
-<p>Clients:
+<h1>Настройки рассылки</h1>
+<p>Время запуска: {{ mailing.start_date }}</p>
+<p>Периодичность: {{ mailing.periodicity }}</p>
+<p>Статус: {{ mailing.status }}</p>
+<p>Сообщение: {{ mailing.message.subject }}</p>
+<p>Пользователи:
 <ul>
     {% for client in mailing.clients.all %}
     <li>{{ client.full_name }} ({{ client.email }})</li>
     {% endfor %}
 </ul>
 </p>
-<a href="{% url 'mailing_list' %}">Back to list</a>
+<a href="{% url 'newsletter:mailing_list' %}">Назад</a>
 </body>
 </html>

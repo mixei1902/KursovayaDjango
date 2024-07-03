@@ -4,16 +4,16 @@
     <title>Clients</title>
 </head>
 <body>
-<h1>Clients</h1>
-<a href="{% url 'client_create' %}">Create new client</a>
-<ul>
-    {% for client in clients %}
-    <li>
-        <a href="{% url 'client_detail' client.pk %}">{{ client.full_name }}</a>
-        <a href="{% url 'client_update' client.pk %}">Edit</a>
-        <a href="{% url 'client_delete' client.pk %}">Delete</a>
-    </li>
-    {% endfor %}
-</ul>
+    <h1>Clients</h1>
+    <a href="{% url 'newsletter:client_create' %}">Создать нового пользователя</a>
+    <ul>
+        {% for client in clients %}
+            <li>
+                <a href="{% url 'newsletter:client_detail' client.pk %}">{{ client.full_name }}</a>
+                <a href="{% url 'newsletter:client_update' client.pk %}">Изменить</a>
+                <a href="{% url 'newsletter:client_delete' client.pk %}">Удалить</a>
+            </li>
+        {% endfor %}
+    </ul>
 </body>
 </html>

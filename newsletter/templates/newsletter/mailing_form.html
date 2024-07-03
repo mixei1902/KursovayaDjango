@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{% if form.instance.pk %}Edit{% else %}Create{% endif %} Mailing</title>
+    <title>{% if form.instance.pk %}Настроить{% else %}Создать{% endif %} Рассылка</title>
 </head>
 <body>
-<h1>{% if form.instance.pk %}Edit{% else %}Create{% endif %} Mailing</h1>
+<h1>{% if form.instance.pk %}Настроить{% else %}Создать{% endif %} Рассылка</h1>
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Save</button>
 </form>
-<a href="{% url 'mailing_list' %}">Back to list</a>
+<a href="{% url 'newsletter:mailing_list' %}">Back to list</a>
 </body>
 </html>

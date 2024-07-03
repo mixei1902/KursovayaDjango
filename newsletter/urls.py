@@ -1,12 +1,15 @@
 from django.urls import path
+
 from .views import (
     ClientListView, ClientDetailView, ClientCreateView, ClientUpdateView, ClientDeleteView,
     MessageListView, MessageDetailView, MessageCreateView, MessageUpdateView, MessageDeleteView,
     MailingListView, MailingDetailView, MailingCreateView, MailingUpdateView, MailingDeleteView,
-    ReportListView, ReportDetailView, UserCreateView, UserDeleteView, UserUpdateView
+    ReportListView, ReportDetailView, HomePageView,
 )
+app_name = 'newsletter'
 
 urlpatterns = [
+    path('', HomePageView.as_view(), name='home'),
     path('clients/', ClientListView.as_view(), name='client_list'),
     path('clients/<int:pk>/', ClientDetailView.as_view(), name='client_detail'),
     path('clients/new/', ClientCreateView.as_view(), name='client_create'),
@@ -28,7 +31,4 @@ urlpatterns = [
     path('reports/', ReportListView.as_view(), name='report_list'),
     path('reports/<int:pk>/', ReportDetailView.as_view(), name='report_detail'),
 
-    path('users/new/', UserCreateView.as_view(), name='user_create'),
-    path('users/<int:pk>/edit/', UserUpdateView.as_view(), name='user_update'),
-    path('users/<int:pk>/delete/', UserDeleteView.as_view(), name='user_delete'),
 ]

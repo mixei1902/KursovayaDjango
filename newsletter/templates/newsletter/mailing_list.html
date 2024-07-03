@@ -4,14 +4,14 @@
     <title>Mailings</title>
 </head>
 <body>
-<h1>Mailings</h1>
-<a href="{% url 'mailing_create' %}">Create new mailing</a>
+<h1>Рассылка</h1>
+<a href="{% url 'newsletter:mailing_create' %}">Создать новую рассылку</a>
 <ul>
     {% for mailing in mailings %}
     <li>
-        <a href="{% url 'mailing_detail' mailing.pk %}">{{ mailing.message.subject }}</a>
-        <a href="{% url 'mailing_update' mailing.pk %}">Edit</a>
-        <a href="{% url 'mailing_delete' mailing.pk %}">Delete</a>
+        <a href="{% url 'newsletter:mailing_detail' mailing.pk %}">{{ mailing.message.subject }}</a>
+        <a href="{% url 'newsletter:mailing_update' mailing.pk %}">Настроить</a>
+        <a href="{% url 'newsletter:mailing_delete' mailing.pk %}">Удалить</a>
     </li>
     {% endfor %}
 </ul>
