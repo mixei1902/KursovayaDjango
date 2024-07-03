@@ -1,12 +1,16 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ client.full_name }}</title>
-</head>
-<body>
-<h1>{{ client.full_name }}</h1>
-<p>Email: {{ client.email }}</p>
-<p>Comment: {{ client.comment }}</p>
-<a href="{% url 'newsletter:client_list' %}">Назад</a>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}{{ client.full_name }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">{{ client.full_name }}</h3>
+    </div>
+    <div class="card-body">
+        <p><strong>Email:</strong> {{ client.email }}</p>
+        <p><strong>Comment:</strong> {{ client.comment }}</p>
+        <a href="{% url 'newsletter:client_list' %}" class="btn btn-secondary">Назад</a>
+    </div>
+</div>
+{% endblock %}

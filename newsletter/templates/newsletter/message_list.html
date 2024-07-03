@@ -1,20 +1,23 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Messages</title>
-</head>
-<body>
-<h1>Сообщения</h1>
-<a href="{% url 'newsletter:message_create' %}">Создать новое сообщение</a>
-<ul>
-    {% for message in messages %}
-    <li>
-        <a href="{% url 'newsletter:message_detail' message.pk %}">{{ message.subject }}</a>
-        <a href="{% url 'newsletter:message_update' message.pk %}">Настроить</a>
-        <a href="{% url 'newsletter:message_delete' message.pk %}">Удалить</a>
-    </li>
-    {% endfor %}
-</ul>
-<a href="{% url 'newsletter:home' %}">Главная</a>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Сообщения{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Сообщения</h3>
+    </div>
+    <div class="card-body">
+        <a href="{% url 'newsletter:message_create' %}" class="btn btn-primary mb-3">Создать новое сообщение</a>
+        <ul class="list-group">
+            {% for message in messages %}
+                <li class="list-group-item">
+                    <a href="{% url 'newsletter:message_detail' message.pk %}">{{ message.subject }}</a>
+                    <a href="{% url 'newsletter:message_update' message.pk %}" class="btn btn-sm btn-warning ml-2">Изменить</a>
+                    <a href="{% url 'newsletter:message_delete' message.pk %}" class="btn btn-sm btn-danger ml-2">Удалить</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

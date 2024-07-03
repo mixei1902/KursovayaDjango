@@ -1,21 +1,24 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Mailing Details</title>
-</head>
-<body>
-<h1>Настройки рассылки</h1>
-<p>Время запуска: {{ mailing.start_date }}</p>
-<p>Периодичность: {{ mailing.periodicity }}</p>
-<p>Статус: {{ mailing.status }}</p>
-<p>Сообщение: {{ mailing.message.subject }}</p>
-<p>Пользователи:
-<ul>
-    {% for client in mailing.clients.all %}
-    <li>{{ client.full_name }} ({{ client.email }})</li>
-    {% endfor %}
-</ul>
-</p>
-<a href="{% url 'newsletter:mailing_list' %}">Назад</a>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Настройки рассылки{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Настройки рассылки</h3>
+    </div>
+    <div class="card-body">
+        <p><strong>Время запуска:</strong> {{ mailing.start_date }}</p>
+        <p><strong>Периодичность:</strong> {{ mailing.periodicity }}</p>
+        <p><strong>Статус:</strong> {{ mailing.status }}</p>
+        <p><strong>Сообщение:</strong> {{ mailing.message.subject }}</p>
+        <p><strong>Пользователи:</strong></p>
+        <ul>
+            {% for client in mailing.clients.all %}
+                <li>{{ client.full_name }} ({{ client.email }})</li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'newsletter:mailing_list' %}" class="btn btn-secondary">Назад</a>
+    </div>
+</div>
+{% endblock %}

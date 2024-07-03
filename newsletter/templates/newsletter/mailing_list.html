@@ -1,20 +1,23 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Mailings</title>
-</head>
-<body>
-<h1>Рассылка</h1>
-<a href="{% url 'newsletter:mailing_create' %}">Создать новую рассылку</a>
-<ul>
-    {% for mailing in mailings %}
-    <li>
-        <a href="{% url 'newsletter:mailing_detail' mailing.pk %}">{{ mailing.message.subject }}</a>
-        <a href="{% url 'newsletter:mailing_update' mailing.pk %}">Настроить</a>
-        <a href="{% url 'newsletter:mailing_delete' mailing.pk %}">Удалить</a>
-    </li>
-    {% endfor %}
-</ul>
-<a href="{% url 'newsletter:home' %}">Главная</a>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Рассылки{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Рассылки</h3>
+    </div>
+    <div class="card-body">
+        <a href="{% url 'newsletter:mailing_create' %}" class="btn btn-primary mb-3">Создать новую рассылку</a>
+        <ul class="list-group">
+            {% for mailing in mailings %}
+                <li class="list-group-item">
+                    <a href="{% url 'newsletter:mailing_detail' mailing.pk %}">{{ mailing.message.subject }}</a>
+                    <a href="{% url 'newsletter:mailing_update' mailing.pk %}" class="btn btn-sm btn-warning ml-2">Настроить</a>
+                    <a href="{% url 'newsletter:mailing_delete' mailing.pk %}" class="btn btn-sm btn-danger ml-2">Удалить</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

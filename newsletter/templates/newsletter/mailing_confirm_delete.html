@@ -1,14 +1,19 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Удалить рассылку</title>
-</head>
-<body>
-<h1>Вы уверены, что хотите удалить рассылку?</h1>
-<form method="post">
-    {% csrf_token %}
-    <button type="submit">Да</button>
-</form>
-<a href="{% url 'newsletter:mailing_list' %}">Назад</a>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Удалить рассылку{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Удалить рассылку</h3>
+    </div>
+    <div class="card-body">
+        <p>Вы уверены, что хотите удалить рассылку?</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Да</button>
+            <a href="{% url 'newsletter:mailing_list' %}" class="btn btn-secondary">Назад</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

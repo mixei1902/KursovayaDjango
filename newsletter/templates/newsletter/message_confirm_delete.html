@@ -1,14 +1,19 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Удалить {{ message.subject }}</title>
-</head>
-<body>
-<h1>Вы уверены,что хотите удалить"{{ message.subject }}"?</h1>
-<form method="post">
-    {% csrf_token %}
-    <button type="submit">да</button>
-</form>
-<a href="{% url 'newsletter:message_list' %}">назад</a>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Удалить {{ message.subject }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Удалить {{ message.subject }}</h3>
+    </div>
+    <div class="card-body">
+        <p>Вы уверены, что хотите удалить сообщение "{{ message.subject }}"?</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Да</button>
+            <a href="{% url 'newsletter:message_list' %}" class="btn btn-secondary">Назад</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

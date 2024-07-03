@@ -1,11 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ message.subject }}</title>
-</head>
-<body>
-<h1>{{ message.subject }}</h1>
-<p>{{ message.body }}</p>
-<a href="{% url 'newsletter:message_list' %}">назад</a>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}{{ message.subject }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">{{ message.subject }}</h3>
+    </div>
+    <div class="card-body">
+        <p>{{ message.body }}</p>
+        <a href="{% url 'newsletter:message_list' %}" class="btn btn-secondary">Назад</a>
+    </div>
+</div>
+{% endblock %}

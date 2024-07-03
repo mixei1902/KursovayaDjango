@@ -1,16 +1,20 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Reports</title>
-</head>
-<body>
-<h1>Отчёты</h1>
-<ul>
-    {% for report in reports %}
-    <li>
-        <a href="{% url 'report_detail' report.pk %}">{{ report.mailing.message.subject }}</a>
-    </li>
-    {% endfor %}
-</ul>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Отчёты{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Отчёты</h3>
+    </div>
+    <div class="card-body">
+        <ul class="list-group">
+            {% for report in reports %}
+                <li class="list-group-item">
+                    <a href="{% url 'newsletter:report_detail' report.pk %}">{{ report.mailing.message.subject }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

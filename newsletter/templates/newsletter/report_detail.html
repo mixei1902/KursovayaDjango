@@ -1,14 +1,18 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Отчёт по рассылке</title>
-</head>
-<body>
-<h1>Детали:</h1>
-<p>Рассылка: {{ report.mailing.message.subject }}</p>
-<p>Дата запуска: {{ report.attempt_date }}</p>
-<p>Статус: {{ report.status }}</p>
-<p>Ответ от сервера: {{ report.server_response }}</p>
-<a href="{% url 'newsletter:report_list' %}">Назад</a>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Отчёт по рассылке{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Детали отчёта</h3>
+    </div>
+    <div class="card-body">
+        <p><strong>Рассылка:</strong> {{ report.mailing.message.subject }}</p>
+        <p><strong>Дата запуска:</strong> {{ report.attempt_date }}</p>
+        <p><strong>Статус:</strong> {{ report.status }}</p>
+        <p><strong>Ответ от сервера:</strong> {{ report.server_response }}</p>
+        <a href="{% url 'newsletter:report_list' %}" class="btn btn-secondary">Назад</a>
+    </div>
+</div>
+{% endblock %}
