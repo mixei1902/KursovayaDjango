@@ -31,4 +31,4 @@ def start_scheduler():
     register_events(scheduler)
     scheduler.start()
 
-    print("Scheduler started...")
+    print("Рассылка запущена...")

@@ -33,7 +33,7 @@ def send_newsletters_for_mailing(mailing):
                 [client.email],
                 fail_silently=False,
             )
-            status = 'success'
+            status = 'Успешно'
         except smtplib.SMTPException as e:
             server_response = str(e)
             status = 'failed'
