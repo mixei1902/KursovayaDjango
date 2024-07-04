@@ -8,4 +8,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('newsletter/', include('newsletter.urls', namespace='newsletter')),
     path('users/', include('users.urls', namespace='users')),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]

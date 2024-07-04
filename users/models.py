@@ -3,7 +3,7 @@ from django.db import models
 
 
 class CustomUser(AbstractUser):
-    username = None
+    username = models.CharField(max_length=150, unique=True)
     email = models.EmailField(unique=True, verbose_name='Еmail')
     phone = models.CharField(max_length=35, verbose_name='Телефон', blank=True, null=True)
     avatar = models.ImageField(upload_to='users/avatars/', verbose_name='Аватар', blank=True, null=True)
@@ -11,7 +11,7 @@ class CustomUser(AbstractUser):
     is_email_verified = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['username']
 
     class Meta:
         verbose_name = 'Пользователь'
