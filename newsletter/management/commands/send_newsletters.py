@@ -4,8 +4,8 @@ from ...tasks import send_newsletters
 
 
 class Command(BaseCommand):
-    help = 'Send all newsletters'
+    help = 'Отправить все рассылки'
 
     def handle(self, *args, **kwargs):
         send_newsletters()
-        self.stdout.write(self.style.SUCCESS('Successfully sent newsletters'))
+        self.stdout.write(self.style.SUCCESS('Успешная отправка'))

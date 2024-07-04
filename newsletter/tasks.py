@@ -37,7 +37,7 @@ def send_newsletters_for_mailing(mailing):
         except smtplib.SMTPException as e:
             server_response = str(e)
             status = 'failed'
-            logger.error(f"Error sending email to {client.email}: {e}")
+            logger.error(f"Ошибка отправки на почту {client.email}: {e}")
 
         MailingAttempt.objects.create(
             mailing=mailing,
@@ -46,7 +46,7 @@ def send_newsletters_for_mailing(mailing):
             server_response=server_response,
         )
 
-    mailing.status = 'completed'
+    mailing.status = 'Завершена'
     mailing.save()
 
 

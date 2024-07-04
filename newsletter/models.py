@@ -37,6 +37,7 @@ class Message(models.Model):
         verbose_name = "Сообщение"
         verbose_name_plural = "Сообщения"
 
+
 class Mailing(models.Model):
     """
     Модель для представления рассылки.
@@ -60,6 +61,7 @@ class Mailing(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
     def __str__(self):
         return f"Рассылка {self.id} - {self.status}"
 

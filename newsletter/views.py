@@ -16,6 +16,7 @@ class ClientListView(LoginRequiredMixin, ListView):
      """
     model = Client
     template_name = 'newsletter/client_list.html'
+    context_object_name = 'clients'
 
     def get_queryset(self):
         return Client.objects.filter(owner=self.request.user)
@@ -85,6 +86,7 @@ class MailingListView(LoginRequiredMixin, ListView):
     """
     model = Mailing
     template_name = 'newsletter/mailing_list.html'
+    context_object_name = 'mailings'
 
     def get_queryset(self):
         return Mailing.objects.filter(owner=self.request.user)
@@ -154,6 +156,7 @@ class MessageListView(LoginRequiredMixin, ListView):
     """
     model = Message
     template_name = 'newsletter/message_list.html'
+    context_object_name = 'messages'
 
     def get_queryset(self):
         return Message.objects.filter(owner=self.request.user)
