@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Почта подтверждена{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Почта подтверждена</h2>
+    <p>Ваша почта успешно подтверждена. Теперь вы можете <a href="{% url 'login' %}">войти</a>.</p>
+</div>
+{% endblock %}
