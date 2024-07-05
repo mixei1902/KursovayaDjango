@@ -1,3 +1,5 @@
+import random
+
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -243,5 +245,12 @@ class HomePageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['random_posts'] = BlogPost.objects.filter(is_published=True).order_by('?')[:3]
+        context['total_mailings'] = Mailing.objects.count()
+        context['active_mailings'] = Mailing.objects.filter(status='active').count()
+        context['unique_clients'] = Client.objects.distinct().count()
+        all_posts = list(BlogPost.objects.all())
+        if len(all_posts) > 3:
+            context['latest_posts'] = random.sample(all_posts, 3)
+        else:
+            context['latest_posts'] = all_posts
         return context
