@@ -17,6 +17,7 @@ from .models import CustomUser
 class UserCreateView(CreateView):
     model = CustomUser
     form_class = UserRegisterForm
+    template_name = 'users/register.html'
     success_url = reverse_lazy('users:login')
 
     def form_valid(self, form):
@@ -64,6 +65,7 @@ def reset_password(request):
 class ProfileView(UpdateView):
     model = CustomUser
     form_class = UserProfileForm
+    template_name = 'users/profile.html'
     success_url = reverse_lazy('users:profile')
 
     def get_object(self, queryset=None):
@@ -72,6 +74,7 @@ class ProfileView(UpdateView):
 
 class UserListView(PermissionRequiredMixin, ListView):
     model = CustomUser
+    template_name = 'users/user_list.html'
     permission_required = 'users.view_all_users'
 
 

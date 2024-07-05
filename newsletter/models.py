@@ -8,10 +8,10 @@ class Client(models.Model):
     Модель для представления клиента сервиса.
     Содержит информацию о контактном email, ФИО, комментарии и владельце.
     """
-    email = models.EmailField(unique=True)
-    full_name = models.CharField(max_length=255)
-    comment = models.TextField(blank=True, null=True)
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    email = models.EmailField(unique=True,verbose_name='Почта' )
+    full_name = models.CharField(max_length=255, verbose_name='Введите Ф.И.О.')
+    comment = models.TextField(blank=True, null=True,verbose_name='Комментарий')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,verbose_name='Владелец')
 
     def __str__(self):
         return self.full_name
@@ -26,9 +26,9 @@ class Message(models.Model):
     Модель для представления сообщения рассылки.
     Содержит тему и тело сообщения, а также владельца.
     """
-    subject = models.CharField(max_length=255)
-    body = models.TextField()
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    subject = models.CharField(max_length=255,verbose_name='Заголовок')
+    body = models.TextField(verbose_name='Текст письма')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,verbose_name='Владелец')
 
     def __str__(self):
         return self.subject
@@ -55,10 +55,10 @@ class Mailing(models.Model):
         ('weekly', 'Раз в неделю'),
         ('monthly', 'Раз в месяц')
     ])
-    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='created')
-    message = models.OneToOneField(Message, on_delete=models.CASCADE)
-    clients = models.ManyToManyField(Client)
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='created',verbose_name='Статус')
+    message = models.OneToOneField(Message, on_delete=models.CASCADE, verbose_name='Сообщение')
+    clients = models.ManyToManyField(Client,verbose_name='Клиент')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Владелец')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -76,9 +76,9 @@ class MailingAttempt(models.Model):
         ('failed', 'Провалена'),
     ]
 
-    mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE)
-    attempt_date = models.DateTimeField(default=timezone.now)
-    status = models.CharField(max_length=50, choices=STATUS_CHOICES)
+    mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE,verbose_name="Рассылка")
+    attempt_date = models.DateTimeField(default=timezone.now,verbose_name='Дата старта')
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES,verbose_name='Статус')
     server_response = models.TextField(blank=True, null=True)
 
     def __str__(self):

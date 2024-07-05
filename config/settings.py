@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'newsletter',
     'django_apscheduler',
     'users',
+    'blog',
 ]
 
 MIDDLEWARE = [

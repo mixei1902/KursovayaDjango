@@ -26,25 +26,32 @@
             </li>
         </ul>
         <ul class="navbar-nav ml-auto">
-                {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <form method="post" action="{% url 'logout' %}">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-outline-danger">Выйти</button>
-                        </form>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-outline-primary" href="{% url 'login' %}">Войти</a>
-                    </li>
-                {% endif %}
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <form method="post" action="{% url 'users:logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-danger">Выйти</button>
+                    </form>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-outline-primary" href="{% url 'users:profile' %}">Профиль</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-outline-primary" href="{% url 'users:users_list' %}">Список пользователей</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link btn btn-outline-primary" href="{% url 'users:login' %}">Войти</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-outline-primary" href="{% url 'users:register' %}">Регистрация</a>
+                </li>
+            {% endif %}
         </ul>
     </div>
 </nav>
 <div class="container mt-4">
-    <div class="jumbotron">
-        <h1 class="display-4">Представляем вашему вниманию: систему автоматической рассылки писем</h1>
-    </div>
+  {% block content %}{% endblock %}
 </div>
 <!-- Bootstrap JS and dependencies -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

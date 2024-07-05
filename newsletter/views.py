@@ -1,7 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import TemplateView
 
+from blog.models import BlogPost
 from .forms import ClientForm, MailingForm, MessageForm
 from .models import Client, Mailing, MailingAttempt, Message
 
@@ -234,3 +236,12 @@ class ReportDetailView(LoginRequiredMixin, DetailView):
     """
     model = MailingAttempt
     template_name = 'newsletter/report_detail.html'
+
+
+class HomePageView(TemplateView):
+    template_name = 'newsletter/home.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['random_posts'] = BlogPost.objects.filter(is_published=True).order_by('?')[:3]
+        return context
