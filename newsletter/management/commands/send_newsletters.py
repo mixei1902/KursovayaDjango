@@ -1,10 +1,10 @@
 from django.core.management.base import BaseCommand
 
-from ...scheduler import start_scheduler
+from newsletter.scheduler import start_scheduler
 
 
 class Command(BaseCommand):
-    help = 'Отправить все рассылки'
+    help = 'Запустить планировщик для рассылок'
 
     def handle(self, *args, **kwargs):
         start_scheduler()

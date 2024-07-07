@@ -23,7 +23,3 @@ class MailingAdmin(admin.ModelAdmin):
 class MailingAttemptAdmin(admin.ModelAdmin):
     list_display = ('mailing', 'attempt_date', 'status')
 
-
-# Убедитесь, что DjangoJobExecution регистрируется только здесь
-if not admin.site.is_registered(DjangoJobExecution):
-    admin.site.register(DjangoJobExecution)
