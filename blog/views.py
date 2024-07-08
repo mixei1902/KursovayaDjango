@@ -1,5 +1,6 @@
-# Create your views here.
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 
 from .forms import BlogPostForm
@@ -13,12 +14,14 @@ class BlogPostCreateView(CreateView):
     success_url = reverse_lazy('blog:blogpost_list')
 
 
+@method_decorator(cache_page(60 * 15), name='dispatch')
 class BlogPostListView(ListView):
     model = BlogPost
     template_name = 'blog/blogpost_list.html'
     context_object_name = 'blogposts'
 
 
+@method_decorator(cache_page(60 * 15), name='dispatch')
 class BlogPostDetailView(DetailView):
     model = BlogPost
     template_name = 'blog/blogpost_detail.html'

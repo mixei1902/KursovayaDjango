@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load cache %}
 {% block content %}
 <div class="container mt-4">
     <h1>Добро пожаловать на наш сервис рассылок!</h1>
@@ -8,6 +8,7 @@
     <p>Количество уникальных клиентов: {{ unique_clients }}</p>
 
     <h2>Последние статьи блога</h2>
+    {% cache 600 latest_posts %}
     <div class="row">
         {% for post in latest_posts %}
             <div class="col-md-4">
@@ -24,5 +25,6 @@
             </div>
         {% endfor %}
     </div>
+    {% endcache %}
 </div>
 {% endblock %}

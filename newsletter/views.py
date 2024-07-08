@@ -2,6 +2,8 @@ import random
 
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.views.generic import TemplateView
 
@@ -240,6 +242,7 @@ class ReportDetailView(LoginRequiredMixin, DetailView):
     template_name = 'newsletter/report_detail.html'
 
 
+@method_decorator(cache_page(60 * 15), name='dispatch')
 class HomePageView(TemplateView):
     template_name = 'newsletter/home.html'
 
